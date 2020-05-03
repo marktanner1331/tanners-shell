@@ -1,0 +1,18 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:tanners_shell"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="tanners_shell.MainWindow"
+        Title="tanners_shell">
+  <Grid ColumnDefinitions="1*,auto,6*" RowDefinitions="*"  Margin="4">
+    <local:Variables Grid.Row="0" Grid.Column="0"/>
+    <GridSplitter Background="LightGray" Width="5" Grid.Row="0" Grid.Column="1"/>
+    <Grid Grid.Row="0" Grid.Column="2"  ColumnDefinitions="*" RowDefinitions="*,auto,50">
+      <local:History Grid.Row="0" Grid.Column="0"/>
+      <GridSplitter Background="LightGray" Height="5" Grid.Row="1" Grid.Column="0"/>
+      <local:CommandBox Grid.Row="2" Grid.Column="0"/>
+    </Grid>
+  </Grid>
+</Window>

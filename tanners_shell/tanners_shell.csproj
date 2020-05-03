@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <AvaloniaResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Remove="CommandBox.xaml" />
+    <AvaloniaResource Remove="CreateVariableModal.xaml" />
+    <AvaloniaResource Remove="History.xaml" />
+    <AvaloniaResource Remove="MessageBox.xaml" />
+    <AvaloniaResource Remove="Variables.xaml" />
+    <AvaloniaResource Remove="VariablesListBoxItem.xaml" />
+    <AvaloniaResource Remove="variables\String\StringView.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="CommandScript.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="CommandBox.xaml" />
+    <None Remove="CreateVariableModal.xaml" />
+    <None Remove="History.xaml" />
+    <None Remove="MessageBox.xaml" />
+    <None Remove="Variables.xaml" />
+    <None Remove="VariablesListBoxItem.xaml" />
+    <None Remove="variables\String\StringView.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CommandScript.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.9.9" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.9" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.5.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Variables.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="History.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CommandBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CreateVariableModal.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="VariablesListBoxItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="variables\String\StringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
