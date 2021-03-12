@@ -2,7 +2,8 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml;
-using tanners_shell.variables;
+using System.Collections.Generic;
+using tanners_shell.views;
 
 namespace tanners_shell
 {
@@ -14,12 +15,12 @@ namespace tanners_shell
 
             public IControl Build(object param)
             {
-                return new VariablesListBoxItem(param as IVariable);
+                return new VariablesListBoxItem((KeyValuePair<string, object>)param);
             }
 
             public bool Match(object data)
             {
-                return data is IVariable;
+                return data is KeyValuePair<string, object>;
             }
         }
 
@@ -28,9 +29,9 @@ namespace tanners_shell
             this.InitializeComponent();
         }
 
-        public VariablesListBoxItem(IVariable variable) : this()
+        public VariablesListBoxItem(KeyValuePair<string, object> variable) : this()
         {
-            this.Find<TextBlock>("nameLabel").Text = variable.name;
+            this.Find<TextBlock>("nameLabel").Text = variable.Key;
         }
 
         private void InitializeComponent()

@@ -9,12 +9,45 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using tanners_shell.variables.String;
+using tanners_shell.views;
 
 namespace tanners_shell
 {
     static class ScriptRunner
     {
+        private static CSharpCompilation compilation;
+
+        static ScriptRunner()
+        {
+           var k = AppDomain.CurrentDomain.GetAssemblies();
+            
+            string assemblyName = Path.GetRandomFileName();
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            List<MetadataReference> metadataReferenceList = new List<MetadataReference>();
+            Assembly[] assemblyArray = currentDomain.GetAssemblies();
+            foreach (Assembly domainAssembly in assemblyArray)
+            {
+                try
+                {
+                    AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
+                    MetadataReference metadataReference = assemblyMetadata.GetReference();
+                    metadataReferenceList.Add(metadataReference);
+                }
+                catch (Exception e)
+                {
+                    Log.Debug("failed to get MetadataReference {0}", e.Message);
+                }
+            }
+
+            metadataReferenceList.Add(AssemblyMetadata.CreateFromFile(Assembly.Load("Microsoft.CSharp").Location).GetReference());
+
+            compilation = CSharpCompilation.Create(
+                assemblyName,
+                syntaxTrees: new List<SyntaxTree> { },
+                references: metadataReferenceList,
+                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+        }
+
         public static bool runCommand(string command)
         {
             string script = getEmbeddedCommandScript();
@@ -25,7 +58,7 @@ namespace tanners_shell
             {
                 return false;
             }
-
+            
             MethodInfo run = assembly.GetType("CommandScript").GetMethod("run",
                 BindingFlags.Public |
                 BindingFlags.NonPublic |
@@ -59,34 +92,11 @@ namespace tanners_shell
         private static Assembly compile(string command)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(command);
-
-            string assemblyName = Path.GetRandomFileName();
-            AppDomain currentDomain = AppDomain.CurrentDomain;
-            List<MetadataReference> metadataReferenceList = new List<MetadataReference>();
-            Assembly[] assemblyArray = currentDomain.GetAssemblies();
-            foreach (Assembly domainAssembly in assemblyArray)
-            {
-                try
-                {
-                    AssemblyMetadata assemblyMetadata = AssemblyMetadata.CreateFromFile(domainAssembly.Location);
-                    MetadataReference metadataReference = assemblyMetadata.GetReference();
-                    metadataReferenceList.Add(metadataReference);
-                }
-                catch (Exception e)
-                {
-                    Log.Debug("failed to get MetadataReference {0}", e.Message);
-                }
-            }
-
-            CSharpCompilation compilation = CSharpCompilation.Create(
-                assemblyName,
-                syntaxTrees: new List<SyntaxTree> { syntaxTree },
-                references: metadataReferenceList,
-                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
+            Compilation temp = compilation.AddSyntaxTrees(syntaxTree);
+            
             using (var ms = new MemoryStream())
             {
-                EmitResult result = compilation.Emit(ms);
+                EmitResult result = temp.Emit(ms);
                 if (!result.Success)
                 {
                     IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);

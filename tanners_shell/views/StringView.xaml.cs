@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace tanners_shell.variables.String
+namespace tanners_shell.views
 {
     public class StringView : UserControl
     {
@@ -13,7 +13,7 @@ namespace tanners_shell.variables.String
 
         public StringView(string s) : this()
         {
-            this.Find<TextBlock>("label").Text = s;
+            this.Find<TextBox>("label").Text = s;
         }
 
         private void InitializeComponent()

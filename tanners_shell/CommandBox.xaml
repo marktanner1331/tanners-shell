@@ -5,8 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="tanners_shell.CommandBox">
   <Grid ColumnDefinitions="*,auto">
-    <TextBox Grid.Column="0" Name="value" AcceptsReturn="True" BorderBrush="Black" BorderThickness="1" Margin="5" IsReadOnly="False"></TextBox>
-    <Button Grid.Column="1" Click="onRunClick">Run</Button>
+    <TextBox Classes="global" Grid.Column="0" Name="value" BorderBrush="Black" BorderThickness="1" Margin="5" IsReadOnly="False"></TextBox>
+    <Button Grid.Column="1" Margin="5" Click="onRunClick">Run</Button>
   </Grid>
-  
 </UserControl>
